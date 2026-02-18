@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   neon: dhanushreddy291/neon@1.0
+  node: circleci/node@7.2.1
 
 workflows:
   test-flow:
