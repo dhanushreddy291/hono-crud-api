@@ -9,5 +9,8 @@ workflows:
     jobs:
       - neon/run_tests:
           name: test-with-neon
+          executor:
+            name: node/default
+            tag: "24.12"
           migrate_command: npm ci && npm run db:migrate && npx playwright install --with-deps chromium
           test_command: npm test
