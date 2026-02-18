@@ -1,0 +1,12 @@
+version: 2.1
+
+orbs:
+  neon: dhanushreddy291/neon@1.0
+
+workflows:
+  test-flow:
+    jobs:
+      - neon/run_tests:
+          name: test-with-neon
+          migrate_command: npm ci && npm run db:migrate && npx playwright install --with-deps chromium
+          test_command: npm test
