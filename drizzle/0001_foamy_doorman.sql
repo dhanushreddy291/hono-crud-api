@@ -1,0 +1,1 @@
+ALTER TABLE "todos" ADD COLUMN "priority" text DEFAULT 'medium' NOT NULL;

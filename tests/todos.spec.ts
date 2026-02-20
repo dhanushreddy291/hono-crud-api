@@ -18,6 +18,7 @@ test.describe('Hono CRUD API E2E Tests', () => {
       title: 'Test Todo from E2E',
       description: 'This is a test todo created by Playwright',
       completed: false,
+      priority: 'high',
     };
 
     const response = await request.post('/todos', {
@@ -31,6 +32,7 @@ test.describe('Hono CRUD API E2E Tests', () => {
     expect(data.title).toBe(newTodo.title);
     expect(data.description).toBe(newTodo.description);
     expect(data.completed).toBe(false);
+    expect(data.priority).toBe('high');
     expect(data).toHaveProperty('createdAt');
     expect(data).toHaveProperty('updatedAt');
 
@@ -52,6 +54,7 @@ test.describe('Hono CRUD API E2E Tests', () => {
     const newTodo = {
       title: 'Specific Todo',
       description: 'To be fetched by ID',
+      priority: 'medium',
     };
     const createResponse = await request.post('/todos', { data: newTodo });
     const created = await createResponse.json();
@@ -63,6 +66,7 @@ test.describe('Hono CRUD API E2E Tests', () => {
     expect(data.id).toBe(created.id);
     expect(data.title).toBe(newTodo.title);
     expect(data.description).toBe(newTodo.description);
+    expect(data.priority).toBe('medium');
   });
 
   test('should return 404 for non-existent todo', async ({ request }) => {
@@ -78,6 +82,7 @@ test.describe('Hono CRUD API E2E Tests', () => {
     const newTodo = {
       title: 'Todo to Update',
       description: 'Original description',
+      priority: 'low',
     };
     const createResponse = await request.post('/todos', { data: newTodo });
     const created = await createResponse.json();
@@ -87,6 +92,7 @@ test.describe('Hono CRUD API E2E Tests', () => {
       title: 'Updated Todo',
       description: 'Updated description',
       completed: true,
+      priority: 'high',
     };
 
     const response = await request.put(`/todos/${created.id}`, {
@@ -100,6 +106,7 @@ test.describe('Hono CRUD API E2E Tests', () => {
     expect(data.title).toBe(updateData.title);
     expect(data.description).toBe(updateData.description);
     expect(data.completed).toBe(true);
+    expect(data.priority).toBe('high');
   });
 
   test('should partially update a todo', async ({ request }) => {
@@ -108,6 +115,7 @@ test.describe('Hono CRUD API E2E Tests', () => {
       title: 'Partial Update Test',
       description: 'Original',
       completed: false,
+      priority: 'medium',
     };
     const createResponse = await request.post('/todos', { data: newTodo });
     const created = await createResponse.json();
@@ -128,6 +136,7 @@ test.describe('Hono CRUD API E2E Tests', () => {
     expect(data.title).toBe(newTodo.title); // Should remain unchanged
     expect(data.description).toBe(newTodo.description); // Should remain unchanged
     expect(data.completed).toBe(true); // Should be updated
+    expect(data.priority).toBe('medium'); // Should remain unchanged
   });
 
   test('should delete a todo (DELETE)', async ({ request }) => {
@@ -135,6 +144,7 @@ test.describe('Hono CRUD API E2E Tests', () => {
     const newTodo = {
       title: 'Todo to Delete',
       description: 'Will be deleted',
+      priority: 'low',
     };
     const createResponse = await request.post('/todos', { data: newTodo });
     const created = await createResponse.json();
@@ -205,6 +215,7 @@ test.describe('Hono CRUD API E2E Tests', () => {
       title: 'Full CRUD Flow Test',
       description: 'Testing complete flow',
       completed: false,
+      priority: 'medium',
     };
 
     const createResponse = await request.post('/todos', { data: newTodo });
@@ -227,11 +238,12 @@ test.describe('Hono CRUD API E2E Tests', () => {
 
     // 4. Update
     const updateResponse = await request.put(`/todos/${todoId}`, {
-      data: { completed: true },
+      data: { completed: true, priority: 'high' },
     });
     expect(updateResponse.ok()).toBeTruthy();
     const updated = await updateResponse.json();
     expect(updated.completed).toBe(true);
+    expect(updated.priority).toBe('high');
 
     // 5. Delete
     const deleteResponse = await request.delete(`/todos/${todoId}`);
