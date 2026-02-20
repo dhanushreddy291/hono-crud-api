@@ -13,12 +13,14 @@ const createTodoSchema = z.object({
   title: z.string().min(1, 'Title is required').max(255),
   description: z.string().optional(),
   completed: z.boolean().optional().default(false),
+  priority: z.enum(['low', 'medium', 'high']).optional().default('medium'),
 });
 
 const updateTodoSchema = z.object({
   title: z.string().min(1).max(255).optional(),
   description: z.string().optional(),
   completed: z.boolean().optional(),
+  priority: z.enum(['low', 'medium', 'high']).optional(),
 });
 
 // GET /todos - List all todos
@@ -68,6 +70,7 @@ todosRouter.post('/', zValidator('json', createTodoSchema), async (c) => {
         title: data.title,
         description: data.description,
         completed: data.completed,
+        priority: data.priority,
       })
       .returning();
 

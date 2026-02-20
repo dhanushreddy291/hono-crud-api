@@ -5,6 +5,7 @@ export const todos = pgTable('todos', {
   title: text('title').notNull(),
   description: text('description'),
   completed: boolean('completed').notNull().default(false),
+  priority: text('priority').notNull().default('medium'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
